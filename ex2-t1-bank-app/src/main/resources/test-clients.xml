@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <import resource="application-context.xml"/>
+
+    <bean id="savingAccount1" class="com.luxoft.bankapp.model.SavingAccount">
+        <constructor-arg value="${client1.savingAccount.balance}"/>
+    </bean>
+
+    <bean id="checkingAccount1" class="com.luxoft.bankapp.model.CheckingAccount">
+        <constructor-arg value="${client1.checkingAccount.overdraft}"/>
+    </bean>
+
+    <bean id="checkingAccount2" class="com.luxoft.bankapp.model.CheckingAccount">
+        <constructor-arg value="${client2.checkingAccount.overdraft}"/>
+    </bean>
+
+    <bean id="genderMale" class="com.luxoft.bankapp.model.Gender" factory-method="valueOf">
+        <constructor-arg value="MALE"/>
+    </bean>
+
+    <bean id="client1" class="com.luxoft.bankapp.model.Client">
+        <constructor-arg value="${client1}"/>
+        <constructor-arg ref="genderMale"/>
+        <property name="repository" ref="repository"/>
+        <property name="city" value="${client1.city}"/>
+        <property name="accounts">
+            <list>
+                <ref bean="savingAccount1"/>
+                <ref bean="checkingAccount1"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="client2" class="com.luxoft.bankapp.model.Client">
+        <constructor-arg value="${client2}"/>
+        <constructor-arg ref="genderMale"/>
+        <property name="repository" ref="repository"/>
+        <property name="city" value="${client2.city}"/>
+        <property name="accounts">
+            <list>
+                <ref bean="checkingAccount2"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="location" value="classpath:clients.properties"/>
+    </bean>
+
+</beans>
